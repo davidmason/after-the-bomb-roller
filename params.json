@@ -1,0 +1,6 @@
+{
+  "name": "After the Bomb roller",
+  "tagline": "Quick initial stat roller for After The Bomb tabletop RPG",
+  "body": "## About\r\nThis is for use with Palladium's tabletop RPG [*After the Bomb*](https://en.wikipedia.org/wiki/After_the_Bomb_(game)), to quickly generate starting stats for a mutant animal.\r\n\r\n## Roll!\r\n\r\n### TODO:\r\n\r\n - refer to page numbers for everything\r\n - base stats (3D6, 16+ adds a D6 -> if 6 then add another D6)\r\n   - IQ\r\n   - ME\r\n   - MA\r\n   - PS\r\n   - PP\r\n   - PE\r\n   - PB\r\n   - Spd\r\n - animal type\r\n   - core game\r\n   - full list (from 2nd ed core book)\r\n   - include from mutants in orbit\r\n   - include custom\r\n - background -> base money, stat bonuses, skills and skill options\r\n - mutation\r\n   - growth level\r\n     - giant options\r\n   - human characteristics\r\n   - (optional) appearance packages\r\n   - psionics\r\n   - natural weapons\r\n   - special abilities\r\n   - vestigial traits\r\n - HP, SDC, AR\r\n - Alignment",
+  "note": "Don't delete this file! It's used internally to help with page regeneration."
+}
