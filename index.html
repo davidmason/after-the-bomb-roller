@@ -1,96 +1,81 @@
 <!doctype html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>After the Bomb roller by davidmason</title>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <title>After the Bomb roller by davidmason</title>
 
-    <link rel="stylesheet" href="stylesheets/styles.css">
-    <link rel="stylesheet" href="stylesheets/github-light.css">
-    <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="stylesheets/styles.css">
+  <link rel="stylesheet" href="stylesheets/github-light.css">
+  <link rel="stylesheet" href="stylesheets/stats-display.css">
+  <meta name="viewport" content="width=device-width">
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-  </head>
-  <body>
-    <div class="wrapper">
-      <header>
-        <h1>After the Bomb roller</h1>
-        <p>Quick initial stat roller for After The Bomb tabletop RPG</p>
+</head>
+<body>
+  <div class="wrapper">
+    <header>
+      <h1>After the Bomb roller</h1>
+      <p>Quick initial stat roller for After The Bomb tabletop RPG</p>
+      <p class="view"><a href="https://github.com/davidmason/after-the-bomb-roller">View the Project on GitHub <small>davidmason/after-the-bomb-roller</small></a></p>
+      <ul>
+        <li><a href="https://github.com/davidmason/after-the-bomb-roller/zipball/master">Download <strong>ZIP File</strong></a></li>
+        <li><a href="https://github.com/davidmason/after-the-bomb-roller/tarball/master">Download <strong>TAR Ball</strong></a></li>
+        <li><a href="https://github.com/davidmason/after-the-bomb-roller">View On <strong>GitHub</strong></a></li>
+      </ul>
+    </header>
+    <section>
+      <h2><a id="about" class="anchor" href="#about" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>About</h2>
+      <p>This is for use with Palladium's tabletop RPG <a href="https://en.wikipedia.org/wiki/After_the_Bomb_(game)"><em>After the Bomb</em></a>, to quickly generate starting stats for a mutant animal.</p>
+      <p>All page numbers are for <a href="https://palladium-store.com/1001/product/503-After-the-Bomb-RPG.html"><em>After the Bomb® RPG (2nd edition)</em> by Palladium Books</a>.
+      I am working from the <a href="http://www.drivethrurpg.com/product/61133/After-the-Bomb-RPG">PDF version purchased through DriveThruRPG</a></p>
 
-        <p class="view"><a href="https://github.com/davidmason/after-the-bomb-roller">View the Project on GitHub <small>davidmason/after-the-bomb-roller</small></a></p>
+      <h2>
+        <a id="roll" class="anchor" href="#roll" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Roll!</h2>
 
+      <button onClick="rollStats()">Roll/Reroll</button>
+      <p id="statsDisplay"></p>
 
-        <ul>
-          <li><a href="https://github.com/davidmason/after-the-bomb-roller/zipball/master">Download <strong>ZIP File</strong></a></li>
-          <li><a href="https://github.com/davidmason/after-the-bomb-roller/tarball/master">Download <strong>TAR Ball</strong></a></li>
-          <li><a href="https://github.com/davidmason/after-the-bomb-roller">View On <strong>GitHub</strong></a></li>
-        </ul>
-      </header>
-      <section>
-        <h2>
-<a id="about" class="anchor" href="#about" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>About</h2>
+      <h3>
+        <a id="todo" class="anchor" href="#todo" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>TODO:</h3>
 
-<p>This is for use with Palladium's tabletop RPG <a href="https://en.wikipedia.org/wiki/After_the_Bomb_(game)"><em>After the Bomb</em></a>, to quickly generate starting stats for a mutant animal.</p>
-
-<h2>
-<a id="roll" class="anchor" href="#roll" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Roll!</h2>
-
-<h3>
-<a id="todo" class="anchor" href="#todo" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>TODO:</h3>
-
-<ul>
-<li>refer to page numbers for everything</li>
-<li>base stats (3D6, 16+ adds a D6 -&gt; if 6 then add another D6)
-
-<ul>
-<li>IQ</li>
-<li>ME</li>
-<li>MA</li>
-<li>PS</li>
-<li>PP</li>
-<li>PE</li>
-<li>PB</li>
-<li>Spd</li>
-</ul>
-</li>
-<li>animal type
-
-<ul>
-<li>core game</li>
-<li>full list (from 2nd ed core book)</li>
-<li>include from mutants in orbit</li>
-<li>include custom</li>
-</ul>
-</li>
-<li>background -&gt; base money, stat bonuses, skills and skill options</li>
-<li>mutation
-
-<ul>
-<li>growth level
-
-<ul>
-<li>giant options</li>
-</ul>
-</li>
-<li>human characteristics</li>
-<li>(optional) appearance packages</li>
-<li>psionics</li>
-<li>natural weapons</li>
-<li>special abilities</li>
-<li>vestigial traits</li>
-</ul>
-</li>
-<li>HP, SDC, AR</li>
-<li>Alignment</li>
-</ul>
-      </section>
-      <footer>
-        <p>This project is maintained by <a href="https://github.com/davidmason">davidmason</a></p>
-        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
-      </footer>
-    </div>
-    <script src="javascripts/scale.fix.js"></script>
-    
-  </body>
+      <ul>
+        <li>refer to page numbers for everything</li>
+        <li>animal type
+          <ul>
+            <li>core game</li>
+            <li>full list (from 2nd ed core book)</li>
+            <li>include from mutants in orbit</li>
+            <li>include custom</li>
+          </ul>
+        </li>
+        <li>background -&gt; base money, stat bonuses, skills and skill options</li>
+        <li>mutation
+          <ul>
+            <li>growth level
+              <ul>
+                <li>giant options</li>
+              </ul>
+            </li>
+            <li>human characteristics</li>
+            <li>(optional) appearance packages</li>
+            <li>psionics</li>
+            <li>natural weapons</li>
+            <li>special abilities</li>
+            <li>vestigial traits</li>
+          </ul>
+        </li>
+        <li>HP, SDC, AR</li>
+        <li>Alignment</li>
+      </ul>
+    </section>
+    <footer>
+      <p>This project is maintained by <a href="https://github.com/davidmason">davidmason</a></p>
+      <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+    </footer>
+  </div>
+  <script src="javascripts/scale.fix.js"></script>
+  <script src="javascripts/roller.js"></script>
+</body>
 </html>
