@@ -4,7 +4,7 @@
  */
 
 function rollStats () {
-  console.log('rollStats()')
+  // console.log('rollStats()')
   // test()
   var container = document.getElementById('statsDisplay')
   clear()
@@ -19,6 +19,23 @@ function rollStats () {
   })
 
   // at this point I have baseStats with all the values
+  print('<ul>\n')
+
+  // IQ
+  print('<li>real-world IQ value would be ' + (baseStats['IQ'] * 10) + '\n')
+  if (baseStats['IQ'] >= 16) {
+    print('<ul><li>add ' + (baseStats['IQ'] - 14) + '% to all skill percentages</li></ul>\n')
+  }
+  print('</li>\n')
+
+  // ME
+  if (baseStats['ME'] >= 16) {
+    print('<li>+' + mePsionicSaveBonus(baseStats['ME']) + ' to save vs. psionic attack</li>\n')
+    print('<li>+' + meInsanitySaveBonus(baseStats['ME']) + ' to save vs. insanity</li>\n')
+  }
+
+
+  print('</ul>')
 
 
   /* Do all the rolls for a base stat calculation,
@@ -33,6 +50,27 @@ function rollStats () {
       }
     }
     return rolls
+  }
+
+  /* bonus value to save vs. psionic attacks for high M.E. values */
+  function mePsionicSaveBonus (me) {
+    if (me < 16) {
+      return 0
+    }
+    return Math.floor((me - 14) / 2)
+  }
+
+  /* bonus value to save vs. insanity for high M.E. values */
+  function meInsanitySaveBonus (me) {
+    if (me < 16) {
+      return 0
+    }
+    if (me < 20) {
+      // 16,17 -> 1
+      // 18,19 -> 2
+      return Math.floor((me - 14) / 2)
+    }
+    return me - 17
   }
 
   /* remove all content from the container */
@@ -66,6 +104,7 @@ function rollStats () {
     return array.reduce(function (acc, v) { return acc + v }, 0)
   }
 
+
   /* make sure all functions generate expected output */
   function test () {
     var pass = 0, fail = 0, total = 0
@@ -76,6 +115,54 @@ function rollStats () {
         checkRoll(sides, rollNSidedDie(sides))
       }
     })
+
+    total++
+    if (mePsionicSaveBonus(16) === 1) {
+      pass++
+    } else {
+      fail++
+      console.error('mePsionicSaveBonus for 16 should be +1 but was +' + mePsionicSaveBonus(16))
+    }
+
+    for (var i = 3; i < 16; i++) {
+      checkMePsionicSaveBonus(i, 0)
+    }
+    checkMePsionicSaveBonus(16, 1)
+    checkMePsionicSaveBonus(17, 1)
+    checkMePsionicSaveBonus(18, 2)
+    checkMePsionicSaveBonus(19, 2)
+    checkMePsionicSaveBonus(20, 3)
+    checkMePsionicSaveBonus(21, 3)
+    checkMePsionicSaveBonus(22, 4)
+    checkMePsionicSaveBonus(23, 4)
+    checkMePsionicSaveBonus(24, 5)
+    checkMePsionicSaveBonus(25, 5)
+    checkMePsionicSaveBonus(26, 6)
+    checkMePsionicSaveBonus(27, 6)
+    checkMePsionicSaveBonus(28, 7)
+    checkMePsionicSaveBonus(29, 7)
+    checkMePsionicSaveBonus(30, 8)
+
+    for (var i = 3; i < 16; i++) {
+      checkMeInsanitySaveBonus(i, 0)
+    }
+    checkMeInsanitySaveBonus(16, 1)
+    checkMeInsanitySaveBonus(17, 1)
+    checkMeInsanitySaveBonus(18, 2)
+    checkMeInsanitySaveBonus(19, 2)
+    checkMeInsanitySaveBonus(20, 3)
+    checkMeInsanitySaveBonus(21, 4)
+    checkMeInsanitySaveBonus(22, 5)
+    checkMeInsanitySaveBonus(23, 6)
+    checkMeInsanitySaveBonus(24, 7)
+    checkMeInsanitySaveBonus(25, 8)
+    checkMeInsanitySaveBonus(26, 9)
+    checkMeInsanitySaveBonus(27, 10)
+    checkMeInsanitySaveBonus(28, 11)
+    checkMeInsanitySaveBonus(29, 12)
+    checkMeInsanitySaveBonus(30, 13)
+
+
 
     console.log('tested ' + total + ' pass:' + pass + ' fail: ' + fail)
 
@@ -96,6 +183,28 @@ function rollStats () {
       } else {
         fail++
         console.error('roll for ' + sides + '-sided die gave out-of-range value ' + rolledNumber)
+      }
+    }
+
+    function checkMePsionicSaveBonus (meStat, expectedBonus) {
+      total++
+      var actual = mePsionicSaveBonus(meStat)
+      if (actual === expectedBonus) {
+        pass++
+      } else {
+        fail++
+        console.error('mePsionicSaveBonus(' + meStat + ') should be +' + expectedBonus + ' but was +' + actual)
+      }
+    }
+
+    function checkMeInsanitySaveBonus (meStat, expectedBonus) {
+      total++
+      var actual = meInsanitySaveBonus(meStat)
+      if (actual === expectedBonus) {
+        pass++
+      } else {
+        fail++
+        console.error('meInsanitySaveBonus(' + meStat + ') should be +' + expectedBonus + ' but was +' + actual)
       }
     }
   }
