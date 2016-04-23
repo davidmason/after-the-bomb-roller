@@ -24,7 +24,7 @@ function rollStats () {
   // IQ
   print('<li>real-world IQ value would be ' + (baseStats['IQ'] * 10) + '\n')
   if (baseStats['IQ'] >= 16) {
-    print('<ul><li>add ' + (baseStats['IQ'] - 14) + '% to all skill percentages</li></ul>\n')
+    print('<ul><li>add ' + iqSkillBonus(baseStats['IQ']) + '% to all skill percentages</li></ul>\n')
   }
   print('</li>\n')
 
@@ -32,6 +32,11 @@ function rollStats () {
   if (baseStats['ME'] >= 16) {
     print('<li>+' + mePsionicSaveBonus(baseStats['ME']) + ' to save vs. psionic attack</li>\n')
     print('<li>+' + meInsanitySaveBonus(baseStats['ME']) + ' to save vs. insanity</li>\n')
+  }
+
+  // MA
+  if (baseStats['MA'] >= 16) {
+    print('<li>add ' + maTrustIntimidateBonus(baseStats['MA']) + '% to trust/intimidate</li>\n')
   }
 
 
@@ -52,12 +57,26 @@ function rollStats () {
     return rolls
   }
 
+  /* percentage bonus to skills for high I.Q. values */
+  function iqSkillBonus (iq) {
+    if (iq < 16) {
+      return 0
+    }
+    if (iq <= 30) {
+      return iq - 14
+    }
+    return 16 // maxed out at 30, does not increase beyond
+  }
+
   /* bonus value to save vs. psionic attacks for high M.E. values */
   function mePsionicSaveBonus (me) {
     if (me < 16) {
       return 0
     }
-    return Math.floor((me - 14) / 2)
+    if (me <= 30) {
+      return Math.floor((me - 14) / 2)
+    }
+    return 8 // maxed out at 30, does not increse beyond
   }
 
   /* bonus value to save vs. insanity for high M.E. values */
@@ -66,11 +85,29 @@ function rollStats () {
       return 0
     }
     if (me < 20) {
-      // 16,17 -> 1
-      // 18,19 -> 2
       return Math.floor((me - 14) / 2)
     }
-    return me - 17
+    if (me <= 30) {
+      return me - 17
+    }
+    return 13 // maxed out at 30, does not increase beyond
+  }
+
+  /* bonus percentage to invoke trust or intimidate for high M.A. values */
+  function maTrustIntimidateBonus (ma) {
+    if (ma < 16) {
+      return 0
+    }
+    if (ma <= 24) {
+      return (ma - 8) * 5
+    }
+    if (ma <= 27) {
+      return (ma - 4) * 4
+    }
+    if (ma <= 29) {
+      return (ma + 19) * 2
+    }
+    return 97 // maxes out at 30, does not increase beyond
   }
 
   /* remove all content from the container */
@@ -116,14 +153,6 @@ function rollStats () {
       }
     })
 
-    total++
-    if (mePsionicSaveBonus(16) === 1) {
-      pass++
-    } else {
-      fail++
-      console.error('mePsionicSaveBonus for 16 should be +1 but was +' + mePsionicSaveBonus(16))
-    }
-
     for (var i = 3; i < 16; i++) {
       checkMePsionicSaveBonus(i, 0)
     }
@@ -142,6 +171,7 @@ function rollStats () {
     checkMePsionicSaveBonus(28, 7)
     checkMePsionicSaveBonus(29, 7)
     checkMePsionicSaveBonus(30, 8)
+    checkMePsionicSaveBonus(31, 8)
 
     for (var i = 3; i < 16; i++) {
       checkMeInsanitySaveBonus(i, 0)
@@ -161,7 +191,27 @@ function rollStats () {
     checkMeInsanitySaveBonus(28, 11)
     checkMeInsanitySaveBonus(29, 12)
     checkMeInsanitySaveBonus(30, 13)
+    checkMeInsanitySaveBonus(31, 13)
 
+    for (var i = 3; i < 16; i++) {
+      checkMaTrustIntimidateBonus(i, 0)
+    }
+    checkMaTrustIntimidateBonus(16, 40)
+    checkMaTrustIntimidateBonus(17, 45)
+    checkMaTrustIntimidateBonus(18, 50)
+    checkMaTrustIntimidateBonus(19, 55)
+    checkMaTrustIntimidateBonus(20, 60)
+    checkMaTrustIntimidateBonus(21, 65)
+    checkMaTrustIntimidateBonus(22, 70)
+    checkMaTrustIntimidateBonus(23, 75)
+    checkMaTrustIntimidateBonus(24, 80)
+    checkMaTrustIntimidateBonus(25, 84)
+    checkMaTrustIntimidateBonus(26, 88)
+    checkMaTrustIntimidateBonus(27, 92)
+    checkMaTrustIntimidateBonus(28, 94)
+    checkMaTrustIntimidateBonus(29, 96)
+    checkMaTrustIntimidateBonus(30, 97)
+    checkMaTrustIntimidateBonus(31, 97)
 
 
     console.log('tested ' + total + ' pass:' + pass + ' fail: ' + fail)
@@ -205,6 +255,17 @@ function rollStats () {
       } else {
         fail++
         console.error('meInsanitySaveBonus(' + meStat + ') should be +' + expectedBonus + ' but was +' + actual)
+      }
+    }
+
+    function checkMaTrustIntimidateBonus (maStat, expectedBonus) {
+      total++
+      var actual = maTrustIntimidateBonus(maStat)
+      if (actual === expectedBonus) {
+        pass++
+      } else {
+        fail++
+        console.error('maTrustIntimidateBonus(' + maStat + ') should be +' + expectedBonus + ' but was +' + actual)
       }
     }
   }
