@@ -9,6 +9,8 @@ function rollStats () {
   var container = document.getElementById('statsDisplay')
   clear()
 
+  var KG_PER_POUND = 0.453592
+
   print('<h4>Base stats (pp. 11-13)</h4>\n')
 
   var baseStats = {};
@@ -39,9 +41,58 @@ function rollStats () {
     print('<li>add ' + maTrustIntimidateBonus(baseStats['MA']) + '% to trust/intimidate</li>\n')
   }
 
+  // PS
+  print('<li>character can carry ' + carryAmount(baseStats['PS']) + ' pounds (' + carryAmount(baseStats['PS']) * KG_PER_POUND + ' Kg, more with beastly/crushing strength)</li>\n')
+  print('<li>character can lift ' + liftAmount(baseStats['PS']) + ' pounds (' + liftAmount(baseStats['PS']) * KG_PER_POUND + ' Kg, more with beastly/crushing strength)</li>\n')
+  if (baseStats['PS'] >= 16) {
+    print('<li>+' + psHandToHandCombatBonus(baseStats['PS']) + ' to Hand to Hand combat damage</li>\n')
+  }
+
+  // PP
+  if (baseStats['PP'] >= 16) {
+    print('<li>+' + ppParryDodgeStrikeBonus(baseStats['PP']) + ' to parry, dodge and strike</li>\n')
+  }
+  if (baseStats['PP'] >= 34) {
+    print('<li>+' + ppInitiativeBonus(baseStats['PP']) + ' to initiative rolls</li>\n')
+  }
+
+  // PE
+  print('<li>character can run at maximum speed for ' + baseStats['PE'] + ' minutes</li>\n')
+  print('<li>character can carry their maximum load (above) for ' + baseStats['PE'] * 4 + ' minutes (only ' + baseStats['PE'] * 2 + ' minutes if running/fighting)</li>\n')
+  print('<li>character can hold their maximum lift weight for ' + baseStats['PE'] + ' melee rounds (' + baseStats['PE'] / 4 + ' minutes)</li>\n')
+  if (baseStats['PE'] >= 16) {
+    print('<li>add ' + peComaDeathSaveBonus(baseStats['PE']) + '% to save vs. coma/death</li>')
+    print('<li>+' + peMagicPoisonSaveBonus(baseStats['PE']) + ' to save vs. magic/poison</li>')
+  }
+
+  // PB
+  if (baseStats['PB'] >= 16) {
+    print('<li>add ' + pbCharmImpressBonus(baseStats['PB']) + '% to charm/impress</li>')
+  }
+
+  // Spd
+  print('<li>character can run at speeds up to ' + baseStats['Spd'] * 11 / 10 + ' Km/h</li>\n')
 
   print('</ul>')
 
+  /* does this strength value qualify as "beastly strength"? */
+  function beastlyStrength (ps) {
+    return ps >= 17
+  }
+
+  function carryAmount (ps) {
+    if (beastlyStrength(ps)) {
+      return ps * 20
+    }
+    return ps * 10
+  }
+
+  function liftAmount (ps) {
+    if (beastlyStrength(ps)) {
+      return ps * 50
+    }
+    return ps * 30
+  }
 
   /* Do all the rolls for a base stat calculation,
    * including any bonus rolls for high values
@@ -110,6 +161,66 @@ function rollStats () {
     return 97 // maxes out at 30, does not increase beyond
   }
 
+  /* bonus damage in hand to hand combat for high P.S. values */
+  function psHandToHandCombatBonus (ps) {
+    if (ps < 16) {
+      return 0
+    }
+    return ps - 15 // no limit to bonus, can increase beyond 30
+  }
+
+  function ppParryDodgeStrikeBonus (pp) {
+    // exactly the same scale as M.E. psionic attack resistance bonus
+    return mePsionicSaveBonus (pp)
+  }
+
+  function ppInitiativeBonus (pp) {
+    if (pp <= 30) {
+      return 0
+    }
+    if (pp <= 50) {
+      return Math.floor((pp - 30) / 4)
+    }
+    return 5 // 50 is the absolute max possible, so 5 is the max bonus
+  }
+
+  /* bonus to save vs. coma/death for high P.E. values */
+  function peComaDeathSaveBonus (pe) {
+    if (pe < 16) {
+      return 0
+    }
+    if (pe <= 18) {
+      return pe - 12
+    }
+    if (pe <= 30) {
+      return (pe - 15) * 2
+    }
+    return pe // linear scale beyond 30
+  }
+
+  /* bonus to save vs magic/poison for high P.E. values */
+  function peMagicPoisonSaveBonus (pe) {
+    // exactly the same scale as M.E. psionic attack resistance bonus
+    return mePsionicSaveBonus (pe)
+  }
+
+  /* bonus to charm and impress for high P.B. values */
+  function pbCharmImpressBonus (pb) {
+    if (pb < 16) {
+      return 0
+    }
+    if (pb <= 26) {
+      return (pb - 10) * 5
+    }
+    if (pb <= 30) {
+      // assumption: typo in chart when it shows amount increase by 3, 3, 4, 2
+      //             looks like it should really be 3, 3, 3, 3
+      return (pb - 26) * 3 + 80
+    }
+    return 92 // maxes out at 30, does not increase beyond
+  }
+
+
   /* remove all content from the container */
   function clear () {
     container.innerHTML = ''
@@ -140,7 +251,6 @@ function rollStats () {
   function sum (array) {
     return array.reduce(function (acc, v) { return acc + v }, 0)
   }
-
 
   /* make sure all functions generate expected output */
   function test () {
